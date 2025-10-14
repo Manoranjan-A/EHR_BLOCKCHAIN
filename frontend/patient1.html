@@ -1,0 +1,154 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Patient</title></head><body>
+<h2>Patient Dashboard</h2>
+
+<section><h3>Login</h3>
+<form id="loginForm"><input name="email" placeholder="Email"/><br/><input name="password" type="password" placeholder="Password"/><br/><button>Login</button></form>
+<pre id="loginOut"></pre></section>
+
+<section><h3>Upload EHR</h3>
+<form id="uploadForm" enctype="multipart/form-data">
+  <input id="ownerId" name="ownerId" placeholder="PatientId (P1001)"/><br/>
+  <input name="filename" placeholder="FileDescription (optional)"/><br/>
+  <input type="file" name="ehrFile"/><br/>
+  <button>Upload</button>
+</form>
+<pre id="uploadOut"></pre></section>
+
+<section><h3>My EHRs</h3>
+<input id="listOwner" placeholder="PatientId"/><button id="btnListEhrs">List EHRs</button><pre id="ehrsOut"></pre></section>
+
+<section><h3>Pending Requests</h3>
+<input id="pendingOwner" placeholder="PatientId"/><button id="btnPending">Get Pending</button><pre id="pendingOut"></pre>
+<h4>Approve Request</h4>
+<input id="approveOwner" placeholder="PatientId"/><input id="approveReqId" placeholder="RequestId"/><input id="approveOwnerPriv" placeholder="OwnerPrivHex (demo)"/><button id="btnApprove">Approve</button><pre id="approveOut"></pre>
+</section>
+
+
+<script>
+document.getElementById('loginForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const body = Object.fromEntries(new FormData(e.target).entries());
+
+  const res = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  const j = await res.json();
+
+  if (!j.ok) {
+    // Show specific error messages
+    if (j.message === "user not found") {
+      document.getElementById('loginOut').innerText = "Invalid email id";
+    } else if (j.message === "invalid password") {
+      document.getElementById('loginOut').innerText = "Incorrect password";
+    } else {
+      document.getElementById('loginOut').innerText = "Invalid credentials";
+    }
+    return;
+  }
+
+  // Login success
+  document.getElementById('loginOut').innerText = "Patient logged in successfully";
+  localStorage.setItem('userId', j.id);
+  localStorage.setItem('role', j.role);
+  document.getElementById('ownerId').value = j.id;
+  document.getElementById('listOwner').value = j.id;
+  document.getElementById('pendingOwner').value = j.id;
+  document.getElementById('approveOwner').value = j.id;
+};
+
+
+document.getElementById('uploadForm').onsubmit = async (e) => {
+  e.preventDefault();
+
+  const fileInput = document.querySelector('#uploadForm input[type="file"]');
+  if (!fileInput.files.length) {
+    document.getElementById('uploadOut').innerText = "No file found. Please select a file.";
+    return;
+  }
+
+  const fd = new FormData(e.target);
+
+  const res = await fetch('/api/upload-ehr', {
+    method: 'POST',
+    body: fd
+  });
+
+  const j = await res.json();
+
+  document.getElementById('uploadOut').innerText = j.message;
+};
+
+
+document.getElementById('btnListEhrs').onclick = async () => {
+  const owner = document.getElementById('listOwner').value;
+  const res = await fetch('/api/list-ehrs/' + encodeURIComponent(owner));
+  const j = await res.json();
+
+  if (!j.ok) {
+    document.getElementById('ehrsOut').innerText = "Error fetching EHRs";
+    return;
+  }
+
+  if (j.ehrs.length === 0) {
+    document.getElementById('ehrsOut').innerText = j.message;
+    return;
+  }
+
+  const output = j.ehrs.map(e => `EHR ID: ${e.ehrId}, FileDescription: ${e.filename || "N/A"}`).join("\n");
+  document.getElementById('ehrsOut').innerText = output;
+};
+
+
+document.getElementById('btnPending').onclick = async () => {
+  const owner = document.getElementById('pendingOwner').value;
+  const res = await fetch('/api/pending-requests/' + encodeURIComponent(owner));
+  const j = await res.json();
+
+  if (!j.ok) {
+    document.getElementById('pendingOut').innerText = "Error fetching pending requests";
+    return;
+  }
+
+  if (j.requests.length === 0) {
+    document.getElementById('pendingOut').innerText = j.message;
+    return;
+  }
+
+  const output = j.requests
+    .map(r => `Doctor ID: ${r.doctorId}, Doctor Name: ${r.doctorName}, EHR ID: ${r.ehrId}, Request ID: ${r.requestId}`)
+    .join("\n");
+
+  document.getElementById('pendingOut').innerText = output;
+};
+
+document.getElementById('btnApprove').onclick = async () => {
+  const requestId = document.getElementById('approveReqId').value;
+  const ownerPrivHex = document.getElementById('approveOwnerPriv').value;
+
+  const res = await fetch('/api/approve-request', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ requestId, ownerPrivHex })
+  });
+
+  const j = await res.json();
+
+  if (res.status === 404) {
+    document.getElementById('approveOut').innerText =
+      j.err === 'ehr not found' ? 'Error: Request ID is invalid' : 'Error: Request ID is invalid';
+  } else if (res.status === 403) {
+    document.getElementById('approveOut').innerText = 'Error: Not authenticated / invalid private key';
+  } else if (res.status === 200 && j.ok) {
+    document.getElementById('approveOut').innerText = "✅ Request approved successfully";
+  } else {
+    document.getElementById('approveOut').innerText = "Error approving request";
+  }
+};
+
+
+
+</script>
+</body></html>

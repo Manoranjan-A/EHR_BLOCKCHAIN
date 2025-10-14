@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/health.css" />
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <span>Admin Panel</span>
+      </div>
+      <nav class="nav">
+        <a href="/index.html">Home</a>
+        <a href="/doctor.html">Doctor</a>
+        <a href="/patient.html">Patient</a>
+      </nav>
+    </header>
+
+    <main id="main" class="sections">
+      <section class="section" aria-labelledby="admin-login">
+        <h2 id="admin-login">Admin Login</h2>
+        <form id="loginFormAdmin" class="form">
+          <div class="form-row">
+            <label class="label" for="adminEmail">Email</label>
+            <input id="adminEmail" class="input" name="email" placeholder="admin@example.com" required />
+          </div>
+          <div class="form-row">
+            <label class="label" for="adminPw">Password</label>
+            <input id="adminPw" class="input" name="password" type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <pre id="loginAdminOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section id="adminDashboard" class="section" style="display:none;" aria-labelledby="dashboard">
+        <h2 id="dashboard">Admin Dashboard</h2>
+
+        <section class="section" aria-labelledby="reg-patient">
+          <h3 id="reg-patient">Register Patient</h3>
+          <form id="regPatient" class="form">
+            <div class="form-row"><label class="label" for="pFull">Full name</label><input id="pFull" class="input" name="fullName" placeholder="Jane Doe" required /></div>
+            <div class="form-row"><label class="label" for="pDob">DOB</label><input id="pDob" class="input" name="dob" placeholder="YYYY-MM-DD" required /></div>
+            <div class="form-row"><label class="label" for="pGender">Gender</label><input id="pGender" class="input" name="gender" placeholder="Gender" required /></div>
+            <div class="form-row"><label class="label" for="pContact">Contact</label><input id="pContact" class="input" name="contact" placeholder="+1 (555) 123-4567" required /></div>
+            <div class="form-row"><label class="label" for="pEmail">Email</label><input id="pEmail" class="input" name="email" placeholder="patient@email.com" required /></div>
+            <div class="form-row"><label class="label" for="pAddr">Address</label><input id="pAddr" class="input" name="address" placeholder="123 Main St" required /></div>
+            <div class="form-row"><label class="label" for="pPass">Password</label><input id="pPass" class="input" type="password" name="password" placeholder="••••••••" required /></div>
+            <button type="submit" class="btn btn-primary">Register Patient</button>
+          </form>
+          <pre id="regPatientOut" class="output" aria-live="polite"></pre>
+        </section>
+
+        <section class="section" aria-labelledby="reg-doctor">
+          <h3 id="reg-doctor">Register Doctor</h3>
+          <form id="regDoctor" class="form">
+            <div class="form-row"><label class="label" for="dFull">Full name</label><input id="dFull" class="input" name="fullName" placeholder="Dr. John Smith" required /></div>
+            <div class="form-row"><label class="label" for="dContact">Contact</label><input id="dContact" class="input" name="contact" placeholder="+1 (555) 987-6543" required /></div>
+            <div class="form-row"><label class="label" for="dEmail">Email</label><input id="dEmail" class="input" name="email" placeholder="doctor@email.com" required /></div>
+            <div class="form-row"><label class="label" for="dLicense">License ID</label><input id="dLicense" class="input" name="licenseId" placeholder="LIC-123456" required /></div>
+            <div class="form-row"><label class="label" for="dSpec">Specialization</label><input id="dSpec" class="input" name="specialization" placeholder="Cardiology" required /></div>
+            <div class="form-row"><label class="label" for="dHosp">Hospital</label><input id="dHosp" class="input" name="hospital" placeholder="General Hospital" required /></div>
+            <div class="form-row"><label class="label" for="dPass">Password</label><input id="dPass" class="input" type="password" name="password" placeholder="••••••••" required /></div>
+            <button type="submit" class="btn btn-primary">Register Doctor</button>
+          </form>
+          <pre id="regDoctorOut" class="output" aria-live="polite"></pre>
+        </section>
+
+        <section class="section" aria-labelledby="list-users">
+          <h3 id="list-users">List Users</h3>
+          <button type="button" id="btnList" class="btn btn-secondary">List Users</button>
+          <pre id="listOut" class="output" aria-live="polite"></pre>
+        </section>
+      </section>
+    </main>
+
+    <footer>© EHR System</footer>
+  </div>
+
+  <script>
+  const ADMIN_EMAIL = "admin@example.com";
+  const ADMIN_PASSWORD = "Admin123";
+
+  // Show dashboard only after login
+  function showDashboard() {
+    document.getElementById('adminDashboard').style.display = 'block';
+  }
+
+  // Check admin login before actions
+  function checkAdminLogin() {
+    return localStorage.getItem('role') === 'admin';
+  }
+
+  // Admin login
+  document.getElementById('loginFormAdmin').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      localStorage.setItem('role', 'admin');
+      localStorage.setItem('adminId', 'admin123');
+      document.getElementById('loginAdminOut').innerText = "Admin logged in successfully!";
+      showDashboard();
+    } else {
+      document.getElementById('loginAdminOut').innerText = "Invalid admin credentials!";
+    }
+  });
+
+  // Register patient
+  document.getElementById('regPatient').onsubmit = async (e) => {
+    e.preventDefault();
+    if (!checkAdminLogin()) {
+      alert("Please login as admin to register patients");
+      return;
+    }
+    const body = Object.fromEntries(new FormData(e.target).entries());
+    const res = await fetch('/api/register/patient', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const j = await res.json();
+    document.getElementById('regPatientOut').innerText = j.ok
+      ? `${j.message}\nPatient ID: ${j.patientId}\nPrivate Key: ${j.privateKey}`
+      : `Error: ${j.message || j.err}`;
+  };
+
+  // Register doctor
+  document.getElementById('regDoctor').onsubmit = async (e) => {
+    e.preventDefault();
+    if (!checkAdminLogin()) {
+      alert("Please login as admin to register doctors");
+      return;
+    }
+    const body = Object.fromEntries(new FormData(e.target).entries());
+    const res = await fetch('/api/register/doctor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const j = await res.json();
+    document.getElementById('regDoctorOut').innerText = j.ok
+      ? `${j.message}\nDoctor ID: ${j.doctorId}\nPrivate Key: ${j.privateKey}`
+      : `Error: ${j.message || j.err}`;
+  };
+
+  // List users
+  document.getElementById('btnList').onclick = async () => {
+    if (!checkAdminLogin()) {
+      alert("Please login as admin to view users");
+      return;
+    }
+    const res = await fetch('/api/list-users');
+    const j = await res.json();
+
+    if (j.ok) {
+      let output = "";
+      j.users.forEach(u => {
+        if (u.licenseId) {
+          output += `Doctor:\nID: ${u.id}\nName: ${u.fullName}\nContact: ${u.contact}\nEmail: ${u.email}\nLicense ID: ${u.licenseId}\nSpecialization: ${u.specialization}\nHospital: ${u.hospital}\n\n`;
+        } else {
+          output += `Patient:\nID: ${u.id}\nName: ${u.fullName}\nDOB: ${u.dob}\nGender: ${u.gender}\nContact: ${u.contact}\nEmail: ${u.email}\nAddress: ${u.address}\nEHRs Uploaded: ${u.ehrsUploaded}\n\n`;
+        }
+      });
+      document.getElementById('listOut').innerText = output;
+    } else {
+      document.getElementById('listOut').innerText = "Error loading users";
+    }
+  };
+  </script>
+</body>
+</html>

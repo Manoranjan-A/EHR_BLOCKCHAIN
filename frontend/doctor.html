@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Doctor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/health.css" />
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <span>Doctor Dashboard</span>
+      </div>
+      <nav class="nav">
+        <a href="/index.html">Home</a>
+        <a href="/patient.html">Patient</a>
+        <a href="/admin.html">Admin</a>
+      </nav>
+    </header>
+
+    <main id="main" class="sections">
+      <section class="section" aria-labelledby="d-login">
+        <h2 id="d-login">Login</h2>
+        <form id="loginFormDoc" class="form">
+          <div class="form-row"><label class="label" for="dEmail">Email</label><input id="dEmail" class="input" name="email" placeholder="you@hospital.org" /></div>
+          <div class="form-row"><label class="label" for="dPw">Password</label><input id="dPw" class="input" name="password" type="password" placeholder="••••••••" /></div>
+          <button class="btn btn-primary">Login</button>
+        </form>
+        <pre id="loginDocOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="d-search">
+        <h2 id="d-search">Search Patient</h2>
+        <div class="form" style="grid-template-columns: 1fr auto; align-items:end">
+          <div class="form-row"><label class="label" for="searchPatient">Patient ID or name</label><input id="searchPatient" class="input" placeholder="PatientId or name" /></div>
+          <button id="btnSearch" class="btn btn-secondary">Search</button>
+        </div>
+        <pre id="searchOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="d-request">
+        <h2 id="d-request">Request Access</h2>
+        <div class="form" style="grid-template-columns: repeat(3, 1fr); align-items:end">
+          <div class="form-row"><label class="label" for="docId">Doctor ID</label><input id="docId" class="input" placeholder="DoctorId" /></div>
+          <div class="form-row"><label class="label" for="reqEhrId">EHR ID</label><input id="reqEhrId" class="input" placeholder="EHRId" /></div>
+          <button id="btnReq" class="btn btn-primary" style="align-self:end">Request Access</button>
+        </div>
+        <pre id="reqOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="d-fetch">
+        <h2 id="d-fetch">Fetch Decrypted EHR</h2>
+        <div class="form" style="grid-template-columns: repeat(4, 1fr); align-items:end">
+          <div class="form-row"><label class="label" for="fetchDocId">Doctor ID</label><input id="fetchDocId" class="input" placeholder="DoctorId" /></div>
+          <div class="form-row"><label class="label" for="fetchPriv">Doctor Private Key (hex)</label><input id="fetchPriv" class="input" placeholder="DoctorPrivHex (demo)" /></div>
+          <div class="form-row"><label class="label" for="fetchEhrId">EHR ID</label><input id="fetchEhrId" class="input" placeholder="EHRId" /></div>
+          <button id="btnFetch" class="btn btn-primary" style="align-self:end">Fetch</button>
+        </div>
+        <pre id="fetchOut" class="output" aria-live="polite"></pre>
+      </section>
+    </main>
+
+    <footer>© EHR System</footer>
+  </div>
+
+  <script>
+  document.getElementById('loginFormDoc').onsubmit = async (e) => {
+    e.preventDefault();
+
+    const body = Object.fromEntries(new FormData(e.target).entries());
+
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const j = await res.json();
+
+    document.getElementById('loginDocOut').innerText = j.message || JSON.stringify(j, null, 2);
+
+    if (j.ok) {
+      localStorage.setItem('userId', j.id);
+      localStorage.setItem('role', j.role);
+      document.getElementById('docId').value = j.id;
+      document.getElementById('fetchDocId').value = j.id;
+    }
+  };
+
+  document.getElementById('btnSearch').onclick = async () => {
+    const q = document.getElementById('searchPatient').value.trim();
+    const res = await fetch('/api/list-users');
+    const j = await res.json();
+
+    const users = (j.users || []).filter(
+      u => u.fullName?.toLowerCase().includes(q.toLowerCase()) || u.id === q
+    );
+
+    if (users.length === 0) {
+      document.getElementById('searchOut').innerText = "No patient found.";
+      return;
+    }
+
+    const output = users.map(u => `
+  Full Name: ${u.fullName}
+  Date of Birth: ${u.dob}
+  Gender: ${u.gender}
+  Contact: ${u.contact}
+  Email: ${u.email}
+  Address: ${u.address}
+  EHR IDs: ${u.ehrIds?.length ? u.ehrIds.join(", ") : "None"}
+  `).join("\n-----------------------\n");
+
+    document.getElementById('searchOut').innerText = output;
+  };
+
+
+  document.getElementById('btnReq').onclick = async () => {
+    const doctorId = document.getElementById('docId').value;
+    const ehrId = document.getElementById('reqEhrId').value;
+
+    const res = await fetch('/api/request-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doctorId, ehrId })
+    });
+
+    const j = await res.json();
+
+    if (j.err) {
+      document.getElementById('reqOut').innerText = j.err; // display error
+    } else {
+      document.getElementById('reqOut').innerText = j.message; // display success message
+    }
+  };
+
+
+  document.getElementById('btnFetch').onclick = async () => {
+    const doctorId = document.getElementById('fetchDocId').value;
+    const doctorPrivHex = document.getElementById('fetchPriv').value;
+    const ehrId = document.getElementById('fetchEhrId').value;
+
+    const res = await fetch('/api/fetch-ehr', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doctorId, doctorPrivHex, ehrId })
+    });
+
+    const j = await res.json();
+
+    if (res.status === 404) {
+      document.getElementById('fetchOut').innerText = 'Error: EHR not found';
+      return;
+    }
+    if (res.status === 403) {
+      document.getElementById('fetchOut').innerText =
+        j.err === 'patient yet to provide access'
+          ? 'Error: Patient has not provided access yet'
+          : 'Error: Unauthenticated doctor';
+      return;
+    }
+
+    if (j.ok) {
+      document.getElementById('fetchOut').innerText =
+        "EHR request approved. Download starting...";
+
+      const data = j.data;
+      const link = document.createElement('a');
+      link.href = 'data:application/octet-stream;base64,' + data;
+      link.download = j.filename || (ehrId + '.bin');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } else {
+      document.getElementById('fetchOut').innerText = "Error fetching EHR";
+    }
+  };
+  </script>
+</body>
+</html>

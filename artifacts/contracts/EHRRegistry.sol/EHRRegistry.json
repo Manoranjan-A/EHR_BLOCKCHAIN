@@ -1,0 +1,251 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "EHRRegistry",
+  "sourceName": "contracts/EHRRegistry.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "approverId",
+          "type": "string"
+        }
+      ],
+      "name": "AccessApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "requesterId",
+          "type": "string"
+        }
+      ],
+      "name": "AccessRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "revokerId",
+          "type": "string"
+        }
+      ],
+      "name": "AccessRevoked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ownerId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "cid",
+          "type": "string"
+        }
+      ],
+      "name": "EHRUploaded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "userId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "role",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        }
+      ],
+      "name": "UserRegistered",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "approverId",
+          "type": "string"
+        }
+      ],
+      "name": "approveAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "userId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "role",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        }
+      ],
+      "name": "registerUser",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "requesterId",
+          "type": "string"
+        }
+      ],
+      "name": "requestAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "reqId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "revokerId",
+          "type": "string"
+        }
+      ],
+      "name": "revokeAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "ehrId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ownerId",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "cid",
+          "type": "string"
+        }
+      ],
+      "name": "uploadEHR",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5061045e806100206000396000f3fe608060405234801561001057600080fd5b50600436106100575760003560e01c806363531f921461005c5780637ddf704714610078578063cef482c214610094578063d637dcfa146100b0578063db6a88ec146100cc575b600080fd5b610076600480360381019061007191906102c4565b6100e8565b005b610092600480360381019061008d91906102c4565b610131565b005b6100ae60048036038101906100a991906102c4565b61017a565b005b6100ca60048036038101906100c591906102c4565b6101c3565b005b6100e660048036038101906100e191906102c4565b61020c565b005b7ff96096debaf1fed2c692cbe40c7cc3b82f21371088c811c3b2488bf44b479070868686868686604051610121969594939291906103d6565b60405180910390a1505050505050565b7f76a0311a8ee1f64247603fc02ac075d1c622aa7c6005c1833d4c2ec85a35e49e86868686868660405161016a969594939291906103d6565b60405180910390a1505050505050565b7f45014b8f8bc3f4a2005d3444e803e0f7ff77e97d408014c5e63540097b8b125f8686868686866040516101b3969594939291906103d6565b60405180910390a1505050505050565b7f0a012201ed6ad03a46b4a2be566d40057141543493eb16b35966ad83539abe4f8686868686866040516101fc969594939291906103d6565b60405180910390a1505050505050565b7fe65933210f5b388f8c5d89f0a237a049bbed2ca79177f962e691ae7fa7ef35a5868686868686604051610245969594939291906103d6565b60405180910390a1505050505050565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b60008083601f8401126102845761028361025f565b5b8235905067ffffffffffffffff8111156102a1576102a0610264565b5b6020830191508360018202830111156102bd576102bc610269565b5b9250929050565b600080600080600080606087890312156102e1576102e0610255565b5b600087013567ffffffffffffffff8111156102ff576102fe61025a565b5b61030b89828a0161026e565b9650965050602087013567ffffffffffffffff81111561032e5761032d61025a565b5b61033a89828a0161026e565b9450945050604087013567ffffffffffffffff81111561035d5761035c61025a565b5b61036989828a0161026e565b92509250509295509295509295565b600082825260208201905092915050565b82818337600083830152505050565b6000601f19601f8301169050919050565b60006103b58385610378565b93506103c2838584610389565b6103cb83610398565b840190509392505050565b600060608201905081810360008301526103f181888a6103a9565b905081810360208301526104068186886103a9565b9050818103604083015261041b8184866103a9565b905097965050505050505056fea26469706673582212206183305450c67410bb64e6bd6bf6d7cc715b4fe495f6734d2aaa59b2117441c764736f6c63430008130033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100575760003560e01c806363531f921461005c5780637ddf704714610078578063cef482c214610094578063d637dcfa146100b0578063db6a88ec146100cc575b600080fd5b610076600480360381019061007191906102c4565b6100e8565b005b610092600480360381019061008d91906102c4565b610131565b005b6100ae60048036038101906100a991906102c4565b61017a565b005b6100ca60048036038101906100c591906102c4565b6101c3565b005b6100e660048036038101906100e191906102c4565b61020c565b005b7ff96096debaf1fed2c692cbe40c7cc3b82f21371088c811c3b2488bf44b479070868686868686604051610121969594939291906103d6565b60405180910390a1505050505050565b7f76a0311a8ee1f64247603fc02ac075d1c622aa7c6005c1833d4c2ec85a35e49e86868686868660405161016a969594939291906103d6565b60405180910390a1505050505050565b7f45014b8f8bc3f4a2005d3444e803e0f7ff77e97d408014c5e63540097b8b125f8686868686866040516101b3969594939291906103d6565b60405180910390a1505050505050565b7f0a012201ed6ad03a46b4a2be566d40057141543493eb16b35966ad83539abe4f8686868686866040516101fc969594939291906103d6565b60405180910390a1505050505050565b7fe65933210f5b388f8c5d89f0a237a049bbed2ca79177f962e691ae7fa7ef35a5868686868686604051610245969594939291906103d6565b60405180910390a1505050505050565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b60008083601f8401126102845761028361025f565b5b8235905067ffffffffffffffff8111156102a1576102a0610264565b5b6020830191508360018202830111156102bd576102bc610269565b5b9250929050565b600080600080600080606087890312156102e1576102e0610255565b5b600087013567ffffffffffffffff8111156102ff576102fe61025a565b5b61030b89828a0161026e565b9650965050602087013567ffffffffffffffff81111561032e5761032d61025a565b5b61033a89828a0161026e565b9450945050604087013567ffffffffffffffff81111561035d5761035c61025a565b5b61036989828a0161026e565b92509250509295509295509295565b600082825260208201905092915050565b82818337600083830152505050565b6000601f19601f8301169050919050565b60006103b58385610378565b93506103c2838584610389565b6103cb83610398565b840190509392505050565b600060608201905081810360008301526103f181888a6103a9565b905081810360208301526104068186886103a9565b9050818103604083015261041b8184866103a9565b905097965050505050505056fea26469706673582212206183305450c67410bb64e6bd6bf6d7cc715b4fe495f6734d2aaa59b2117441c764736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    section { margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+    input { margin: 5px 0; padding: 5px; width: 200px; }
+    button { padding: 5px 10px; margin-top: 10px; cursor: pointer; }
+    pre { background: #f9f9f9; padding: 10px; border-radius: 5px; }
+    h2 { margin-top: 40px; }
+  </style>
+</head>
+<body>
+
+<section>
+  <h3>Admin Login</h3>
+  <form id="loginFormAdmin">
+    <input name="email" placeholder="Email" required /><br/>
+    <input name="password" type="password" placeholder="Password" required /><br/>
+    <button type="submit">Login</button>
+  </form>
+  <pre id="loginAdminOut"></pre>
+</section>
+
+<section id="adminDashboard" style="display:none;">
+  <h2>Admin Dashboard</h2>
+
+  <section>
+    <h3>Register Patient</h3>
+    <form id="regPatient">
+      <input name="fullName" placeholder="Full name" required /><br/>
+      <input name="dob" placeholder="YYYY-MM-DD" required /><br/>
+      <input name="gender" placeholder="Gender" required /><br/>
+      <input name="contact" placeholder="Contact" required /><br/>
+      <input name="email" placeholder="Email" required /><br/>
+      <input name="address" placeholder="Address" required /><br/>
+      <input type="password" name="password" placeholder="Password" required /><br/>
+      <button type="submit">Register Patient</button>
+    </form>
+    <pre id="regPatientOut"></pre>
+  </section>
+
+  <section>
+    <h3>Register Doctor</h3>
+    <form id="regDoctor">
+      <input name="fullName" placeholder="Full name" required /><br/>
+      <input name="contact" placeholder="Contact" required /><br/>
+      <input name="email" placeholder="Email" required /><br/>
+      <input name="licenseId" placeholder="License ID" required /><br/>
+      <input name="specialization" placeholder="Specialization" required /><br/>
+      <input name="hospital" placeholder="Hospital" required /><br/>
+      <input type="password" name="password" placeholder="Password" required /><br/>
+      <button type="submit">Register Doctor</button>
+    </form>
+    <pre id="regDoctorOut"></pre>
+  </section>
+
+  <section>
+    <h3>List Users</h3>
+    <button type="button" id="btnList">List Users</button>
+    <pre id="listOut"></pre>
+  </section>
+</section>
+
+<script>
+const ADMIN_EMAIL = "admin@example.com";
+const ADMIN_PASSWORD = "Admin123";
+
+// Show dashboard only after login
+function showDashboard() {
+  document.getElementById('adminDashboard').style.display = 'block';
+}
+
+// Check admin login before actions
+function checkAdminLogin() {
+  return localStorage.getItem('role') === 'admin';
+}
+
+// Admin login
+document.getElementById('loginFormAdmin').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.email.value;
+  const password = form.password.value;
+
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    localStorage.setItem('role', 'admin');
+    localStorage.setItem('adminId', 'admin123');
+    document.getElementById('loginAdminOut').innerText = "Admin logged in successfully!";
+    showDashboard();
+  } else {
+    document.getElementById('loginAdminOut').innerText = "Invalid admin credentials!";
+  }
+});
+
+// Register patient
+document.getElementById('regPatient').onsubmit = async (e) => {
+  e.preventDefault();
+  if (!checkAdminLogin()) {
+    alert("Please login as admin to register patients");
+    return;
+  }
+  const body = Object.fromEntries(new FormData(e.target).entries());
+  const res = await fetch('/api/register/patient', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const j = await res.json();
+  document.getElementById('regPatientOut').innerText = j.ok
+    ? `${j.message}\nPatient ID: ${j.patientId}\nPrivate Key: ${j.privateKey}`
+    : `Error: ${j.message || j.err}`;
+};
+
+// Register doctor
+document.getElementById('regDoctor').onsubmit = async (e) => {
+  e.preventDefault();
+  if (!checkAdminLogin()) {
+    alert("Please login as admin to register doctors");
+    return;
+  }
+  const body = Object.fromEntries(new FormData(e.target).entries());
+  const res = await fetch('/api/register/doctor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const j = await res.json();
+  document.getElementById('regDoctorOut').innerText = j.ok
+    ? `${j.message}\nDoctor ID: ${j.doctorId}\nPrivate Key: ${j.privateKey}`
+    : `Error: ${j.message || j.err}`;
+};
+
+// List users
+document.getElementById('btnList').onclick = async () => {
+  if (!checkAdminLogin()) {
+    alert("Please login as admin to view users");
+    return;
+  }
+  const res = await fetch('/api/list-users');
+  const j = await res.json();
+
+  if (j.ok) {
+    let output = "";
+    j.users.forEach(u => {
+      if (u.licenseId) {
+        output += `Doctor:\nID: ${u.id}\nName: ${u.fullName}\nContact: ${u.contact}\nEmail: ${u.email}\nLicense ID: ${u.licenseId}\nSpecialization: ${u.specialization}\nHospital: ${u.hospital}\n\n`;
+      } else {
+        output += `Patient:\nID: ${u.id}\nName: ${u.fullName}\nDOB: ${u.dob}\nGender: ${u.gender}\nContact: ${u.contact}\nEmail: ${u.email}\nAddress: ${u.address}\nEHRs Uploaded: ${u.ehrsUploaded}\n\n`;
+      }
+    });
+    document.getElementById('listOut').innerText = output;
+  } else {
+    document.getElementById('listOut').innerText = "Error loading users";
+  }
+};
+</script>
+
+</body>
+</html>

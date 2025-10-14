@@ -1,0 +1,270 @@
+{
+  "users": {
+    "P1001": {
+      "id": "P1001",
+      "role": "patient",
+      "fullName": "Vijeyasri Thinesh",
+      "dob": "2005-03-16",
+      "gender": "Female",
+      "contact": "9994305501",
+      "email": "vijeyasrithinesh1d@gmail.com",
+      "address": "51,Seerangan street 5,Dadagapatty,Salem-636006",
+      "passwordHash": "$2a$10$Gb2KGi3gk3.Oo/PKXCVAhu2HGtMoDOwEUvoZgtYXPgejvUYNp3aTa",
+      "pub": "040e093cd7d72dba56a8b3744166d190c9923c5d1e6f173be317f5907ab38ab33ff789e788dcebb60c553d738a651f9be73942a31f0023fe943ace199891203e92",
+      "priv": "5460b2aee4f3d23c6522c5ebd61562a3499cdc8448fdf3adcb632eec12ec086f",
+      "suspended": false
+    },
+    "D2001": {
+      "id": "D2001",
+      "role": "doctor",
+      "fullName": "Sagithya",
+      "contact": "9487581091",
+      "email": "sagithyathinesh1983@gmail.com",
+      "licenseId": "1234",
+      "specialization": "heart",
+      "hospital": "kmch",
+      "passwordHash": "$2a$10$9jW1zNfXg8ZNmP7YSKa4uewfNplbIDC8gmCY5pfwamM5teAZmTr9S",
+      "pub": "046cfd50c2cbe1a36819a077fc0e7d69e3e80182d45397aec6d8f041cdffa254b9a45b41030512615bdf2dbafd7e199abf070fbbe25a5c646121e38cba85a56179",
+      "priv": "4ca66c7b4995f063ee86f7bf6d612d9331be8a033da01be9529422cfa4f4b1ea",
+      "suspended": false
+    },
+    "P1002": {
+      "id": "P1002",
+      "role": "patient",
+      "fullName": "vincy J",
+      "dob": "2004-07-13",
+      "gender": "female",
+      "contact": "1234567890",
+      "email": "vincy@gmail.com",
+      "address": "road",
+      "passwordHash": "$2a$10$RnEjdD0n0UZ6vL6j.8xnFezEJlQykOZA9.LH2ia3KUp/q6PS8iSe.",
+      "pub": "046e98d9fbf109c72ea2009d6c61519b8d02f05c3f0d90298d2ebb43b7bac76db16205925955a2004c6d1c7fa626295f62e17ca806f0c2d35836fc10d9c2837215",
+      "priv": "b8c857b38254d18513b68ef5640bd9844a404e50f0bdf2e2ea0140cb47e9fa21",
+      "suspended": false
+    },
+    "D2002": {
+      "id": "D2002",
+      "role": "doctor",
+      "fullName": "sandy",
+      "contact": "9842733531",
+      "email": "22z258@psgtech.ac.in",
+      "licenseId": "3456",
+      "specialization": "ent",
+      "hospital": "salem gh",
+      "passwordHash": "$2a$10$jMDawVMc1H/6SA/k.7qiaeev69th0JEebTVN/RduMhhH4qV9LMBXq",
+      "pub": "0429e62817fdad6f59ca6162ef5b15ea5de84c4a72204c2842e655ba0546d68a776d65f6d215091ae3a7adfbfddb6cb6008d38d8cd8d30397e57982735616cc262",
+      "priv": "e7782adfaf126f0116d432ba6fb5597fa559a8619d63933879a92bd0c65726e8",
+      "suspended": false
+    }
+  },
+  "ehrs": {
+    "EHR3001": {
+      "id": "EHR3001",
+      "ownerId": "P1001",
+      "filename": "id.pdf",
+      "file": "EHR3001.enc",
+      "iv": "2b9d033ffea1a58ec7129da0",
+      "tag": "c949e5259b9b05001992af5fcdd466f8",
+      "wrappedToOwner": {
+        "ephPub": "04a27f765e6b2e53a7c8f9a43b5019478b778c4e8e3a400d71f2aed796727e2c7d0ededd1517a4a662c091cae4f98bf6d902cb685878367089c8aa6f91e0bd45bc",
+        "wrapped": "45123584561fb6f480ecd0b6741d3539b67fb2218546f1c209159c364f9a6c51",
+        "iv": "13f90a613b6eaf27f127b0f8",
+        "tag": "d3b542a65f27092e4cdfb1e9a420a42b"
+      },
+      "accessRequests": [
+        {
+          "id": "3d0868c2-25d6-4948-98b3-006e68ffc13c",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759544942294
+        },
+        {
+          "id": "775d346b-c8f4-4da4-a4be-09a2f1a1ac7a",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759545167829
+        },
+        {
+          "id": "e7c24e9e-8df1-4498-8c49-5107fe77cf34",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759545168486
+        },
+        {
+          "id": "1a11564e-4d71-4cc5-8add-f016682a4d77",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759545169560
+        },
+        {
+          "id": "f6604406-73aa-4797-ab2d-483d6f464a81",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759553170990
+        },
+        {
+          "id": "e0163114-3b55-496c-a756-25e6f99cf038",
+          "doctorId": "D2001",
+          "status": "approved",
+          "createdAt": 1759553743662
+        },
+        {
+          "id": "7d90d820-d095-48f9-b776-5cab9a26c842",
+          "doctorId": "D2001",
+          "status": "pending",
+          "createdAt": 1759554213304
+        }
+      ],
+      "createdAt": 1759544773081
+    },
+    "EHR3002": {
+      "id": "EHR3002",
+      "ownerId": "P1001",
+      "filename": "22z272_resume.pdf",
+      "file": "EHR3002.enc",
+      "iv": "b1332f8aa4a8dd2cc4d81e1d",
+      "tag": "0fcc6878b98cf45ac4a04e9abdb81176",
+      "wrappedToOwner": {
+        "ephPub": "04e27619e7c088dc85a596ec2de29090a544196eb270294c4228733081f97277be22194357ccf4ee6d8fdf378760673e21e38b868f2c43dd68e96c11191e645e53",
+        "wrapped": "17182fa78282fefe2fd0618d2b468878abd89f432cfd55654867b4195ba825f2",
+        "iv": "be62c7eab35c9fdc43b84712",
+        "tag": "94c8f31d199749871bf4386d30971e03"
+      },
+      "accessRequests": [
+        {
+          "id": "6fa3968b-fd97-45b8-a797-6fed981c34d8",
+          "doctorId": "D2001",
+          "status": "pending",
+          "createdAt": 1759550873004
+        },
+        {
+          "id": "67e77e6f-4b4c-48aa-8bef-b0a4cfc2b911",
+          "doctorId": "D2001",
+          "status": "pending",
+          "createdAt": 1759552077254
+        }
+      ],
+      "createdAt": 1759550860874
+    },
+    "EHR3003": {
+      "id": "EHR3003",
+      "ownerId": "P1001",
+      "filename": "22z272_resume.pdf",
+      "file": "EHR3003.enc",
+      "iv": "34497afd07cc92f98ea0f11e",
+      "tag": "e38fb245833002a688b53f6c31b2ee46",
+      "wrappedToOwner": {
+        "ephPub": "04968ff2d8b9624c46a7e40537223bcb0077fa26225b23ceeccceb00cb9a89f849d699a7810f04465a62a3d97b8adf3279bed96d7c506e123c96f95ebe8f53ba67",
+        "wrapped": "b8beed55a24abb7c5e72e7f5eea71dfdaa94f3ed6bddeb32c8d5f8141e462e33",
+        "iv": "3ed540624ab2e86c72a044d0",
+        "tag": "1b71faaadd199984fd00fda4fa9358c2"
+      },
+      "accessRequests": [],
+      "createdAt": 1759556161075
+    },
+    "EHR3004": {
+      "id": "EHR3004",
+      "ownerId": "P1001",
+      "filename": "22z272Resume.pdf",
+      "file": "EHR3004.enc",
+      "iv": "d6f545baaf3a35c1fd81f9ac",
+      "tag": "797042fb8f56236ab434cb6e459097d0",
+      "wrappedToOwner": {
+        "ephPub": "0448bd756d0a36e4f93cb7120a8b92b22b061cd6b27453086fdfd2122dcebac379b0a4851c975cbb41971094e986f0da47c9e42db432d3a20ea0d1f8351442a4d8",
+        "wrapped": "92ed949540a2617e2a94dcc32bbabdba9e7c8349b08c830835ca638f7d4acbbf",
+        "iv": "0ccae849e798247f84312277",
+        "tag": "53ea3ddf0d48ca7f39d3cd56adb41e05"
+      },
+      "accessRequests": [],
+      "createdAt": 1759556376426
+    },
+    "EHR3005": {
+      "id": "EHR3005",
+      "ownerId": "P1001",
+      "filename": "22z272Resume.pdf",
+      "file": "EHR3005.enc",
+      "iv": "be0976a85013bb6e044cb203",
+      "tag": "32e6fed3dcc55f9112ab0e769e33be29",
+      "wrappedToOwner": {
+        "ephPub": "04785d90c88bba6f9335fd0976ed783921572a247c5751935c5158444584c65905e447055bc181cdbcbb01e4561d9daaf236878df0b49993319eb40fdf37048092",
+        "wrapped": "c2ecdb235a467b7dfeecc28d6dab2102c08902bb224b1711428e99746f4ae4e7",
+        "iv": "dfd7c25b146b16661039869c",
+        "tag": "6c0f88952d7a0ae8b942302721f5d089"
+      },
+      "accessRequests": [],
+      "createdAt": 1759556377925
+    },
+    "EHR3006": {
+      "id": "EHR3006",
+      "ownerId": "P1001",
+      "filename": "22z272Resume.pdf",
+      "file": "EHR3006.enc",
+      "iv": "58429083acc99b281d7e4072",
+      "tag": "f48280d686f935345579f0c3fe4657af",
+      "wrappedToOwner": {
+        "ephPub": "04265a542827c07e686a3104aab79414e1cc78976d0cf491f2cf5781ce6cd8664d205529c02831de7075c2f6d4120ea17aae1b5319f2ea85847c0bb081f4c2d381",
+        "wrapped": "6f3585430fe38d69c96079561606a01008f3ef67be120e7ecbb8d01e80b4016a",
+        "iv": "a8041aa4f46f6f37d93efd33",
+        "tag": "951ea8fbb76493f9d214656a601cbf15"
+      },
+      "accessRequests": [],
+      "createdAt": 1759556378558
+    },
+    "EHR3007": {
+      "id": "EHR3007",
+      "ownerId": "P1001",
+      "filename": "22z272Resume.pdf",
+      "file": "EHR3007.enc",
+      "iv": "41b7b0c37204a5787df7ae52",
+      "tag": "b0ff277999a1a58bc8abfee119cd5408",
+      "wrappedToOwner": {
+        "ephPub": "041d179e8e72318413ff72622e2ca25395bbb498e95510c2fae6c9ead4e8e7b947faeb70c367b15635b1f46e43ae192da8298da550d05e2c9793db619d858fbd5e",
+        "wrapped": "88bbee61ab26c2398f2e8561c7e13e87f549abc80d3e28363bbad4541c096f91",
+        "iv": "da0b90aad3674801b667ff62",
+        "tag": "46cca8b8875ea5b2c4db7d56ba53102b"
+      },
+      "accessRequests": [],
+      "createdAt": 1759556422506
+    }
+  },
+  "wrappacks": {
+    "1a11564e-4d71-4cc5-8add-f016682a4d77::D2001": {
+      "rewrap": {
+        "ephPub": "04182e4bf3dddef2ec2fe5e177e810d823d701fbf8ad975cb43bd1c1b9604dc57b15e50504c4380c1f3d2e971585b4a1c53e07c88fe46f75e330df9a3878e2ea10",
+        "wrapped": "2d084a7128c3d1cef8b769d05e226822ec09b94ee7438fa103ed01086e4e115d",
+        "iv": "c107ab6e2e9037a1c3a9e7f5",
+        "tag": "31fd806f0288aba4899f8526665b897d"
+      },
+      "ehrId": "1a11564e-4d71-4cc5-8add-f016682a4d77",
+      "doctorId": "D2001",
+      "createdAt": 1759550290905
+    },
+    "e7c24e9e-8df1-4498-8c49-5107fe77cf34::D2001": {
+      "rewrap": {
+        "ephPub": "0443787b4f0d7372312075a6d33388f45982e7128f25529f5d167916e7732558f2e2664a09868b43d09d7c1f7c09f473fd6ed6b99eca6675f952f9f1ad2bf20c6d",
+        "wrapped": "d8988483fd4776ca1510a3a6200951fad17a461fd5a90ea49328771e434e7bd7",
+        "iv": "827a7717e451b73119cd9ba5",
+        "tag": "5b677d879e71a03189c888fd74da446d"
+      },
+      "ehrId": "e7c24e9e-8df1-4498-8c49-5107fe77cf34",
+      "doctorId": "D2001",
+      "createdAt": 1759550336252
+    },
+    "EHR3001::D2001": {
+      "rewrap": {
+        "ephPub": "045dc32523f98c1abcee6342ce76411fa2978d8fffe9b0fb1783c07203452096ea6f95d2daca6fd0a7236118502c3a94387a8e3dbc567983218e8465ac98e75030",
+        "wrapped": "0dc69063ba4e9154c961de28cc1e8cd460d82ac8bc21593d8283c7d111a3887e",
+        "iv": "5df1f25469e7248ad00055a0",
+        "tag": "54f0c8a076913c1245e2806984403464"
+      },
+      "ehrId": "EHR3001",
+      "doctorId": "D2001",
+      "createdAt": 1759557272220
+    }
+  },
+  "counters": {
+    "p": 1002,
+    "d": 2002,
+    "e": 3007
+  }
+}

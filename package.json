@@ -1,0 +1,29 @@
+{
+  "name": "ehr-blockchain-complete",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run --network localhost scripts/deploy.js",
+    "start-backend": "node backend/server.js",
+    "start-node": "npx hardhat node"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "5.7.2",
+    "hardhat": "^2.18.0"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "elliptic": "^6.5.4",
+    "express": "^4.18.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
+  }
+}

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Patient</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/health.css" />
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <span>Patient Dashboard</span>
+      </div>
+      <nav class="nav">
+        <a href="/index.html">Home</a>
+        <a href="/doctor.html">Doctor</a>
+        <a href="/admin.html">Admin</a>
+      </nav>
+    </header>
+
+    <main id="main" class="sections">
+      <section class="section" aria-labelledby="p-login">
+        <h2 id="p-login">Login</h2>
+        <form id="loginForm" class="form">
+          <div class="form-row"><label class="label" for="pEmail">Email</label><input id="pEmail" class="input" name="email" placeholder="you@email.com" /></div>
+          <div class="form-row"><label class="label" for="pPw">Password</label><input id="pPw" class="input" name="password" type="password" placeholder="••••••••" /></div>
+          <button class="btn btn-primary">Login</button>
+        </form>
+        <pre id="loginOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="p-upload">
+        <h2 id="p-upload">Upload EHR</h2>
+        <form id="uploadForm" class="form" enctype="multipart/form-data">
+          <div class="form-row"><label class="label" for="ownerId">Patient ID</label><input id="ownerId" class="input" name="ownerId" placeholder="PatientId (P1001)" /></div>
+          <div class="form-row"><label class="label" for="fileDesc">File Description</label><input id="fileDesc" class="input" name="filename" placeholder="FileDescription (optional)" /></div>
+          <div class="form-row"><label class="label" for="ehrFile">EHR File</label><input id="ehrFile" class="file" type="file" name="ehrFile" /></div>
+          <button class="btn btn-primary">Upload</button>
+        </form>
+        <pre id="uploadOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="p-my-ehrs">
+        <h2 id="p-my-ehrs">My EHRs</h2>
+        <div class="form" style="grid-template-columns: 1fr auto; align-items:end">
+          <div class="form-row">
+            <label class="label" for="listOwner">Patient ID</label>
+            <input id="listOwner" class="input" placeholder="PatientId" />
+          </div>
+          <button id="btnListEhrs" class="btn btn-secondary">List EHRs</button>
+        </div>
+        <pre id="ehrsOut" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="section" aria-labelledby="p-pending">
+        <h2 id="p-pending">Pending Requests</h2>
+        <div class="form" style="grid-template-columns: 1fr auto; align-items:end">
+          <div class="form-row">
+            <label class="label" for="pendingOwner">Patient ID</label>
+            <input id="pendingOwner" class="input" placeholder="PatientId" />
+          </div>
+          <button id="btnPending" class="btn btn-secondary">Get Pending</button>
+        </div>
+        <pre id="pendingOut" class="output" aria-live="polite"></pre>
+
+        <h3 style="margin-top:12px">Approve Request</h3>
+        <div class="form" style="grid-template-columns: repeat(4, 1fr) ; gap:12px">
+          <div class="form-row"><label class="label" for="approveOwner">Patient ID</label><input id="approveOwner" class="input" placeholder="PatientId" /></div>
+          <div class="form-row"><label class="label" for="approveReqId">Request ID</label><input id="approveReqId" class="input" placeholder="RequestId" /></div>
+          <div class="form-row"><label class="label" for="approveOwnerPriv">Owner Private Key</label><input id="approveOwnerPriv" class="input" placeholder="OwnerPrivHex (demo)" /></div>
+          <button id="btnApprove" class="btn btn-primary" style="align-self:end">Approve</button>
+        </div>
+        <pre id="approveOut" class="output" aria-live="polite"></pre>
+      </section>
+    </main>
+
+    <footer>© EHR System</footer>
+  </div>
+
+  <script>
+  document.getElementById('loginForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const body = Object.fromEntries(new FormData(e.target).entries());
+
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const j = await res.json();
+
+    if (!j.ok) {
+      // Show specific error messages
+      if (j.message === "user not found") {
+        document.getElementById('loginOut').innerText = "Invalid email id";
+      } else if (j.message === "invalid password") {
+        document.getElementById('loginOut').innerText = "Incorrect password";
+      } else {
+        document.getElementById('loginOut').innerText = "Invalid credentials";
+      }
+      return;
+    }
+
+    // Login success
+    document.getElementById('loginOut').innerText = "Patient logged in successfully";
+    localStorage.setItem('userId', j.id);
+    localStorage.setItem('role', j.role);
+    document.getElementById('ownerId').value = j.id;
+    document.getElementById('listOwner').value = j.id;
+    document.getElementById('pendingOwner').value = j.id;
+    document.getElementById('approveOwner').value = j.id;
+  };
+
+
+  document.getElementById('uploadForm').onsubmit = async (e) => {
+    e.preventDefault();
+
+    const fileInput = document.querySelector('#uploadForm input[type="file"]');
+    if (!fileInput.files.length) {
+      document.getElementById('uploadOut').innerText = "No file found. Please select a file.";
+      return;
+    }
+
+    const fd = new FormData(e.target);
+
+    const res = await fetch('/api/upload-ehr', {
+      method: 'POST',
+      body: fd
+    });
+
+    const j = await res.json();
+
+    document.getElementById('uploadOut').innerText = j.message;
+  };
+
+
+  document.getElementById('btnListEhrs').onclick = async () => {
+    const owner = document.getElementById('listOwner').value;
+    const res = await fetch('/api/list-ehrs/' + encodeURIComponent(owner));
+    const j = await res.json();
+
+    if (!j.ok) {
+      document.getElementById('ehrsOut').innerText = "Error fetching EHRs";
+      return;
+    }
+
+    if (j.ehrs.length === 0) {
+      document.getElementById('ehrsOut').innerText = j.message;
+      return;
+    }
+
+    const output = j.ehrs.map(e => `EHR ID: ${e.ehrId}, FileDescription: ${e.filename || "N/A"}`).join("\n");
+    document.getElementById('ehrsOut').innerText = output;
+  };
+
+
+  document.getElementById('btnPending').onclick = async () => {
+    const owner = document.getElementById('pendingOwner').value;
+    const res = await fetch('/api/pending-requests/' + encodeURIComponent(owner));
+    const j = await res.json();
+
+    if (!j.ok) {
+      document.getElementById('pendingOut').innerText = "Error fetching pending requests";
+      return;
+    }
+
+    if (j.requests.length === 0) {
+      document.getElementById('pendingOut').innerText = j.message;
+      return;
+    }
+
+    const output = j.requests
+      .map(r => `Doctor ID: ${r.doctorId}, Doctor Name: ${r.doctorName}, EHR ID: ${r.ehrId}, Request ID: ${r.requestId}`)
+      .join("\n");
+
+    document.getElementById('pendingOut').innerText = output;
+  };
+
+  document.getElementById('btnApprove').onclick = async () => {
+    const requestId = document.getElementById('approveReqId').value;
+    const ownerPrivHex = document.getElementById('approveOwnerPriv').value;
+
+    const res = await fetch('/api/approve-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requestId, ownerPrivHex })
+    });
+
+    const j = await res.json();
+
+    if (res.status === 404) {
+      document.getElementById('approveOut').innerText =
+        j.err === 'ehr not found' ? 'Error: Request ID is invalid' : 'Error: Request ID is invalid';
+    } else if (res.status === 403) {
+      document.getElementById('approveOut').innerText = 'Error: Not authenticated / invalid private key';
+    } else if (res.status === 200 && j.ok) {
+      document.getElementById('approveOut').innerText = "✅ Request approved successfully";
+    } else {
+      document.getElementById('approveOut').innerText = "Error approving request";
+    }
+  };
+  </script>
+</body>
+</html>

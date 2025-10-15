@@ -47,3 +47,4 @@ This package contains a full-stack prototype with:
 - Blockchain logging is optional; backend will work without deploying the contract, but won't emit events to the chain.
 - If you change contracts, re-run `npx hardhat compile` and re-deploy, then restart backend so it picks up new artifacts and contractAddress.json.
 # EHR_BLOCKCHAIN
+# EHR_BLOCKCHAIN
